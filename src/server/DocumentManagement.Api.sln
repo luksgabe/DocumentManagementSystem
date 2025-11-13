@@ -1,0 +1,67 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentManagement.Api", "DocumentManagement.Api\DocumentManagement.Api.csproj", "{BEFAA2A2-EF9E-40F9-9C5F-21EFD3CFBCBF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0-Presentation", "0-Presentation", "{23B8F54B-DDCC-4A8A-BC74-711623B96F3E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1-Application", "1-Application", "{CE533D21-857C-455B-9A9F-D06E1198C0EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentManagement.Application", "DocumentManagement.Application\DocumentManagement.Application.csproj", "{5DA94CDC-C25B-40CC-AF64-7B9D8FADB0FF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2-Domain", "2-Domain", "{1865D928-130D-460F-A535-786FF519E209}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3-Infrastructure", "3-Infrastructure", "{C572809B-ED07-4409-B827-0E7336D59832}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentManagement.Core", "DocumentManagement.Core\DocumentManagement.Core.csproj", "{F7617562-4C6C-41D0-BF6F-02D257CEE6A3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.1-Infra.Data", "3.1-Infra.Data", "{81873473-1692-4B09-ABDC-5C21F55D6905}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.2-Infra.CrossCutting", "3.2-Infra.CrossCutting", "{9E2A1BDB-6993-4D28-80EA-D295C2ACB5E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentManagement.Infra.Crosscutting.IoC", "DocumentManagement.Infra.Crosscutting.IoC\DocumentManagement.Infra.Crosscutting.IoC.csproj", "{04433E30-7BCF-4E57-9DDD-534C2225A485}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentManagement.Infra.Data", "DocumentManagement.Infra.Data\DocumentManagement.Infra.Data.csproj", "{D599817D-D8A4-4164-88D3-5E9E79DC23E1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BEFAA2A2-EF9E-40F9-9C5F-21EFD3CFBCBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEFAA2A2-EF9E-40F9-9C5F-21EFD3CFBCBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEFAA2A2-EF9E-40F9-9C5F-21EFD3CFBCBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEFAA2A2-EF9E-40F9-9C5F-21EFD3CFBCBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DA94CDC-C25B-40CC-AF64-7B9D8FADB0FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DA94CDC-C25B-40CC-AF64-7B9D8FADB0FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DA94CDC-C25B-40CC-AF64-7B9D8FADB0FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DA94CDC-C25B-40CC-AF64-7B9D8FADB0FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7617562-4C6C-41D0-BF6F-02D257CEE6A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7617562-4C6C-41D0-BF6F-02D257CEE6A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7617562-4C6C-41D0-BF6F-02D257CEE6A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7617562-4C6C-41D0-BF6F-02D257CEE6A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04433E30-7BCF-4E57-9DDD-534C2225A485}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04433E30-7BCF-4E57-9DDD-534C2225A485}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04433E30-7BCF-4E57-9DDD-534C2225A485}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04433E30-7BCF-4E57-9DDD-534C2225A485}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D599817D-D8A4-4164-88D3-5E9E79DC23E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D599817D-D8A4-4164-88D3-5E9E79DC23E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D599817D-D8A4-4164-88D3-5E9E79DC23E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D599817D-D8A4-4164-88D3-5E9E79DC23E1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BEFAA2A2-EF9E-40F9-9C5F-21EFD3CFBCBF} = {23B8F54B-DDCC-4A8A-BC74-711623B96F3E}
+		{5DA94CDC-C25B-40CC-AF64-7B9D8FADB0FF} = {CE533D21-857C-455B-9A9F-D06E1198C0EE}
+		{F7617562-4C6C-41D0-BF6F-02D257CEE6A3} = {1865D928-130D-460F-A535-786FF519E209}
+		{81873473-1692-4B09-ABDC-5C21F55D6905} = {C572809B-ED07-4409-B827-0E7336D59832}
+		{9E2A1BDB-6993-4D28-80EA-D295C2ACB5E6} = {C572809B-ED07-4409-B827-0E7336D59832}
+		{04433E30-7BCF-4E57-9DDD-534C2225A485} = {9E2A1BDB-6993-4D28-80EA-D295C2ACB5E6}
+		{D599817D-D8A4-4164-88D3-5E9E79DC23E1} = {81873473-1692-4B09-ABDC-5C21F55D6905}
+	EndGlobalSection
+EndGlobal
