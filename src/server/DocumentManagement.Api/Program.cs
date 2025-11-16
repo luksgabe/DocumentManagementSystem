@@ -48,7 +48,7 @@ public class Program
             //Add DI Config
             builder.Services.AddDependencyInjectionConfiguration();
 
-            //Add MediatR and FluentValidation
+            //Add MediatR
             builder.Services.AddMediatR(cfg =>
             {
                 cfg.RegisterServicesFromAssemblies(
@@ -71,13 +71,14 @@ public class Program
 
             var app = builder.Build();
 
+            // Configure Middleware
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
+            app.UseMiddleware<CorrelationIdMiddleware>();
+
             app.UseSerilogRequestLogging();
 
             app.UseRateLimiter();
 
-            // Configure Middleware
-            app.UseMiddleware<ExceptionHandlingMiddleware>();
-            app.UseMiddleware<CorrelationIdMiddleware>();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -97,6 +98,7 @@ public class Program
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();

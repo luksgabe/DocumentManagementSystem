@@ -2,6 +2,8 @@
 {
     public class AuditLog : BaseEntity
     {
+        protected AuditLog() { }
+
         public AuditLog(Guid id, DateTime whenUtc, string action, string userSub, string userEmail, string entity, string entityId, string ip, string metadata)
         {
             Id=id;

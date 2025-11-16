@@ -9,17 +9,14 @@ namespace DocumentManagement.Infra.Data.Mapping
         public void Configure(EntityTypeBuilder<DocumentShare> builder)
         {
             builder.ToTable("DocumentShare");
-            builder.HasKey(e => e.Id);
-            builder.Property(e => e.Id)
-                .IsRequired();
-            
-            builder.Property(e => e.DocumentId)
-                .IsRequired();
 
+            builder.HasKey(e => e.Id);
+
+            builder.Property(e => e.DocumentId).IsRequired();
 
             builder.Property(e => e.TargetType)
                 .HasColumnType("tinyint");
-                
+
             builder.Property(e => e.TargetValue)
                 .HasColumnType("nvarchar(200)")
                 .IsRequired();
@@ -27,12 +24,15 @@ namespace DocumentManagement.Infra.Data.Mapping
             builder.Property(e => e.Permission)
                 .HasColumnType("tinyint");
 
-            builder.Property(e => e.SharedAt)
-                .IsRequired();
+            builder.Property(e => e.SharedAt).IsRequired();
 
             builder.HasOne(e => e.Document)
-                .WithMany()
+                .WithMany(d => d.Shares)
                 .HasForeignKey(ds => ds.DocumentId);
+
+            builder.Metadata
+                .FindNavigation(nameof(DocumentShare.Document))!
+                .SetPropertyAccessMode(PropertyAccessMode.Field);
         }
     }
 }

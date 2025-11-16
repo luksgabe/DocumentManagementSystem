@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using DocumentManagement.Infra.Data.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -18,40 +19,26 @@ public static class JwtConfig
             throw new ArgumentException("configuration");
         }
 
+        IConfigurationSection section = configuration.GetSection("AppSettings");
+        services.Configure<AppJwtSettings>(section);
+        AppJwtSettings appSettings = section.Get<AppJwtSettings>()!;
+        byte[] key = Encoding.ASCII.GetBytes(appSettings.SecretKey);
+
         services.AddAuthentication("Bearer")
-        .AddJwtBearer("Bearer", options =>
-        {
-            options.TokenValidationParameters = new TokenValidationParameters
+            .AddJwtBearer(delegate (JwtBearerOptions x)
             {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-
-                ValidIssuer = configuration["Jwt:Issuer"],
-                ValidAudience = configuration["Jwt:Audience"],
-
-                IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!)
-                )
-            };
-
-            // Para usar o token no Swagger corretamente
-            options.Events = new JwtBearerEvents
-            {
-                OnMessageReceived = context =>
+                x.RequireHttpsMetadata = true;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
                 {
-                    // aceitando token no header Authorization: Bearer xxxxx
-                    var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
-                    if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer "))
-                    {
-                        context.Token = authHeader.Substring("Bearer ".Length).Trim();
-                    }
-                    return Task.CompletedTask;
-                }
-            };
-        });
-
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidAudience = appSettings.Audience,
+                    ValidIssuer = appSettings.Issuer
+                };
+            });
         return services;
     }
 }

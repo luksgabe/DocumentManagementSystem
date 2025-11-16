@@ -183,7 +183,7 @@ namespace DocumentManagement.Infra.Data.Migrations
             modelBuilder.Entity("DocumentManagement.Core.Entities.DocumentShare", b =>
                 {
                     b.HasOne("DocumentManagement.Core.Entities.Document", "Document")
-                        .WithMany()
+                        .WithMany("Shares")
                         .HasForeignKey("DocumentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -213,6 +213,8 @@ namespace DocumentManagement.Infra.Data.Migrations
             modelBuilder.Entity("DocumentManagement.Core.Entities.Document", b =>
                 {
                     b.Navigation("DocumentTags");
+
+                    b.Navigation("Shares");
                 });
 
             modelBuilder.Entity("DocumentManagement.Core.Entities.Tag", b =>

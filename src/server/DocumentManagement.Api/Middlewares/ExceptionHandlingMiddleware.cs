@@ -1,9 +1,10 @@
-﻿using FluentValidation;
+﻿using DocumentManagement.Core.Exceptions;
+using FluentValidation;
 using Serilog;
 
 namespace DocumentManagement.Api.Middlewares;
 
-public sealed class ExceptionHandlingMiddleware
+public class ExceptionHandlingMiddleware
 {
     private readonly RequestDelegate _next;
 
@@ -35,14 +36,34 @@ public sealed class ExceptionHandlingMiddleware
         {
             Log.Error(ex, "Unhandled exception");
 
-            context.Response.StatusCode = 500;
-            context.Response.ContentType = "application/json";
-
-            await context.Response.WriteAsJsonAsync(new
-            {
-                success = false,
-                error = "Internal server error"
-            });
+            await HandleException(context, ex);
         }
+    }
+
+    private static Task HandleException(HttpContext context, Exception ex)
+    {
+        context.Response.ContentType = "application/json";
+
+        var (status, message) = ex switch
+        {
+            AuthorizationException => (StatusCodes.Status403Forbidden, ex.Message),
+            NotFoundException => (StatusCodes.Status404NotFound, ex.Message),
+            AppValidationException => (StatusCodes.Status400BadRequest, ex.Message),
+
+            // FluentValidation
+            ValidationException fvEx =>
+                (StatusCodes.Status400BadRequest,
+                 string.Join("; ", fvEx.Errors.Select(e => e.ErrorMessage))),
+
+            _ => (StatusCodes.Status500InternalServerError, "Internal Server Error")
+        };
+
+        context.Response.StatusCode = status;
+
+        return context.Response.WriteAsJsonAsync(new
+        {
+            success = false,
+            error = message
+        });
     }
 }
