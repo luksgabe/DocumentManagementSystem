@@ -11,15 +11,18 @@ public class UnshareDocumentCommandHandler
     : IRequestHandler<UnshareDocumentCommand, Unit>
 {
     private readonly IDocumentRepository _documentRepository;
+    private readonly IDocumentShareRepository _documentShareRepository;
     private readonly IAuditService _auditService;
     private readonly ILogger<UnshareDocumentCommandHandler> _logger;
 
     public UnshareDocumentCommandHandler(
         IDocumentRepository documentRepository,
-        IAuditService auditService,
+        IDocumentShareRepository documentShareRepository,
+    IAuditService auditService,
         ILogger<UnshareDocumentCommandHandler> logger)
     {
         _documentRepository = documentRepository;
+        _documentShareRepository = documentShareRepository;
         _auditService = auditService;
         _logger = logger;
     }
@@ -41,9 +44,10 @@ public class UnshareDocumentCommandHandler
             throw new AuthorizationException("You are not allowed to unshare this document.");
         }
 
-        document.RemoveShare(request.ShareId);
 
-        await _documentRepository.UpdateDocumentAsync(document, document.DocumentTags.Select(dt => dt.Tag.Name), cancellationToken);
+        var documentShared = await _documentShareRepository.GetByIdAsync(request.ShareId, cancellationToken);
+
+        await _documentShareRepository.RemoveAsync(documentShared!, cancellationToken);
 
         _logger.LogInformation("Share {ShareId} removed from document {DocumentId}", request.ShareId, request.DocumentId);
 

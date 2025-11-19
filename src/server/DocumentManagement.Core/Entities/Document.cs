@@ -5,6 +5,12 @@ namespace DocumentManagement.Core.Entities
 {
     public class Document : BaseEntity
     {
+        #region Private properties
+        private readonly List<DocumentShare> _shares = new();
+        private readonly List<DocumentTag> _documentTags = new();
+        #endregion
+
+        #region Public properties
         public string Title { get; private set; } = null!;
         public string Description { get; private set; } = null!;
         public AccessType AccessType { get; private set; }
@@ -16,12 +22,9 @@ namespace DocumentManagement.Core.Entities
         public DateTime CreatedAt { get; private set; }
         public DateTime? UpdatedAt { get; private set; }
         public string StorageUri { get; private set; } = null!;
-
-        public readonly List<DocumentTag> _documentTags = new();
         public IReadOnlyCollection<DocumentTag> DocumentTags => _documentTags.AsReadOnly();
-
-        private readonly List<DocumentShare> _shares = new();
         public IReadOnlyCollection<DocumentShare> Shares => _shares.AsReadOnly();
+        #endregion
 
         public Document(Guid id,
             string title,

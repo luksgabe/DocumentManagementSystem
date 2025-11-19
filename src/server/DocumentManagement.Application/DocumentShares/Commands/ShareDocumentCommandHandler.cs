@@ -12,15 +12,18 @@ public class ShareDocumentCommandHandler
     : IRequestHandler<ShareDocumentCommand, DocumentShareDto>
 {
     private readonly IDocumentRepository _documentRepository;
+    private readonly IDocumentShareRepository _documentShareRepository;
     private readonly IAuditService _auditService;
     private readonly ILogger<ShareDocumentCommandHandler> _logger;
 
     public ShareDocumentCommandHandler(
         IDocumentRepository documentRepository,
+        IDocumentShareRepository documentShareRepository,
         IAuditService auditService,
         ILogger<ShareDocumentCommandHandler> logger)
     {
         _documentRepository = documentRepository;
+        _documentShareRepository = documentShareRepository;
         _auditService = auditService;
         _logger = logger;
     }
@@ -43,16 +46,30 @@ public class ShareDocumentCommandHandler
             throw new AuthorizationException("You are not allowed to share this document.");
         }
 
-        var share = new DocumentShare(
+        var sharedDocuments = await _documentShareRepository
+            .GetCustomData(p => p.DocumentId == request.DocumentId
+                && p.TargetValue == request.TargetValue
+                &&  p.TargetType == request.TargetType
+                && p.Permission == request.Permission, cancellationToken);
+
+        if(sharedDocuments.Any())
+        {
+            _logger.LogWarning("Document {DocumentId} is already shared with {TargetType}={TargetValue}",
+                request.DocumentId, request.TargetType, request.TargetValue);
+            throw new AppValidationException("Document is already shared with the specified target and permission.");
+        }
+
+
+        var newShare = new DocumentShare(
             Guid.NewGuid(),
             document.Id,
             request.TargetType,
             request.TargetValue,
             request.Permission);
 
-        document.AddShare(share); 
+        await _documentShareRepository.AddAsync(newShare, cancellationToken);
 
-        await _documentRepository.UpdateDocumentAsync(document, document.DocumentTags.Select(dt => dt.Tag.Name), cancellationToken);
+        await _documentRepository.SaveChangesAsync(cancellationToken);
 
         _logger.LogInformation("Document {DocumentId} shared successfully with {TargetType}={TargetValue}",
             document.Id, request.TargetType, request.TargetValue);
@@ -62,11 +79,11 @@ public class ShareDocumentCommandHandler
             new { request.TargetType, request.TargetValue, request.Permission });
 
         return new DocumentShareDto(
-            share.Id,
-            share.TargetType,
-            share.TargetValue,
-            share.Permission,
-            share.SharedAt
+            newShare.Id,
+            newShare.TargetType,
+            newShare.TargetValue,
+            newShare.Permission,
+            newShare.SharedAt
         );
     }
 }

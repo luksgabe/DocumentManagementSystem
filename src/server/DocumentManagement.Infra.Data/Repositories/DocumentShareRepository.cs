@@ -15,4 +15,9 @@ public class DocumentShareRepository : Repository<DocumentShare>, IDocumentShare
     {
         return await _context.DocumentShares.Where(ds => ds.DocumentId == documentId).ToListAsync(cancellationToken);
     }
+
+    public async override Task<DocumentShare?> GetByIdAsync(Guid sharedId, CancellationToken cancellationToken)
+    {
+        return await _context.DocumentShares.AsNoTracking().FirstOrDefaultAsync(ds => ds.Id == sharedId, cancellationToken);
+    }
 }

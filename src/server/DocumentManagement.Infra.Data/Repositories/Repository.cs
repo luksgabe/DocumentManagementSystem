@@ -52,4 +52,9 @@ public class Repository<TEntity> : IRepository<TEntity>, IDisposable where TEnti
         _context.Dispose();
         GC.SuppressFinalize(this);
     }
+
+    public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+    {
+        return await _context.SaveChangesAsync(cancellationToken);
+    }
 }

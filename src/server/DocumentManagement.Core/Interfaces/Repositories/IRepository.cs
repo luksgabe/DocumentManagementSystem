@@ -10,4 +10,6 @@ public interface IRepository<TEntity> : IDisposable where TEntity : class
     Task<IEnumerable<TEntity>> GetCustomData(Expression<Func<TEntity, bool>> expression, CancellationToken cancellationToken);
     Task UpdateAsync(TEntity obj, CancellationToken cancellationToken);
     Task RemoveAsync(TEntity entity, CancellationToken cancellationToken);
+
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

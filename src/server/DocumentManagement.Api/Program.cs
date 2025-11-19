@@ -4,6 +4,7 @@ using DocumentManagement.Application;
 using DocumentManagement.Application.Commons.Behaviors;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Serilog;
 
 public class Program
@@ -88,6 +89,13 @@ public class Program
                 {
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "Document Management System API v1");
                     options.DocumentTitle = "DMS API Documentation";
+                });
+
+                app.UseCors(x =>
+                {
+                    x.AllowAnyOrigin()
+                     .AllowAnyMethod()
+                     .AllowAnyHeader();
                 });
             }
             else

@@ -20,7 +20,7 @@ public class ShareDocumentCommandValidator : AbstractValidator<ShareDocumentComm
 
         RuleFor(x => x.Permission)
             .IsInEnum()
-            .Must(p => p is Permission.Read or Permission.Write)
-            .WithMessage("Only Read or Write permissions are allowed for this operation.");
+            .Must(p => p is Permission.Read or Permission.Write or Permission.Share or Permission.Delete)
+            .WithMessage("Only Read, Write, Share or Delete permissions are allowed for this operation.");
     }
 }
